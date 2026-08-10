@@ -11,8 +11,7 @@ const Hero = () => {
           para <span className="text-gradient">empresas modernas</span>.
         </h1>
         <p className="hero-subtitle">
-          Desarrollo aplicaciones web, dashboards y sistemas empresariales
-          con enfoque en diseño, rendimiento y escalabilidad.
+          Transformo requerimientos de negocio en soluciones tecnológicas eficientes. Especializado en el desarrollo web estructurado, la integración de sistemas y la optimización de bases de datos para impulsar la productividad.
         </p>
         
         <div className="hero-actions">
