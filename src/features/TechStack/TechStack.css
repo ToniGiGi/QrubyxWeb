@@ -1,5 +1,6 @@
 .tech-stack-container {
-  margin-top: 6rem;
+  margin-top: 4rem;
+  margin-bottom: auto;
   width: 100vw;
   max-width: 1200px;
   overflow: hidden;
@@ -8,6 +9,16 @@
   mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
   z-index: 10;
+}
+
+.tech-stack-title {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .tech-stack-mask {
@@ -30,18 +41,50 @@
 .tech-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0 3rem;
+  justify-content: center;
+  padding: 2rem 4rem;
   color: var(--text-secondary);
   font-weight: 500;
-  font-size: 1.1rem;
-  transition: color 0.3s, transform 0.3s;
+  font-size: 1.75rem;
+  transition: all 0.3s ease;
   cursor: default;
 }
 
+.tech-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.25rem;
+}
+
+.tech-icon svg {
+  transition: all 0.3s ease;
+}
+
+.tech-name {
+  transition: all 0.3s ease;
+}
+
 .tech-item:hover {
-  color: var(--text-primary);
+  color: var(--hover-color);
+  animation: neon-pulse 1.5s infinite alternate ease-in-out;
+}
+
+.tech-item:hover .tech-icon svg {
+  transform: scale(1.15);
+}
+
+.tech-item:hover .tech-name {
   transform: scale(1.05);
+}
+
+@keyframes neon-pulse {
+  0% {
+    filter: drop-shadow(0 0 2px var(--hover-color)) drop-shadow(0 0 5px var(--hover-color));
+  }
+  100% {
+    filter: drop-shadow(0 0 4px var(--hover-color)) drop-shadow(0 0 12px var(--hover-color)) brightness(1.2);
+  }
 }
 
 .tech-icon {
@@ -50,9 +93,14 @@
   justify-content: center;
 }
 
+.tech-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
 .tech-separator {
   width: 1px;
-  height: 24px;
+  height: 40px;
   background-color: rgba(255, 255, 255, 0.1);
 }
 

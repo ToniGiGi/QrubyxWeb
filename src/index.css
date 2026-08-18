@@ -45,8 +45,37 @@ button {
 
 /* Utilitarios */
 .text-gradient {
-  background: var(--brand-gradient);
-  -webkit-background-clip: text;
+  background: 
+    linear-gradient(
+      90deg, 
+      rgba(255,255,255,0) 0%, 
+      rgba(255,255,255,0) 40%, 
+      rgba(255,255,255,0.8) 50%, 
+      rgba(255,255,255,0) 60%, 
+      rgba(255,255,255,0) 100%
+    ),
+    var(--brand-gradient);
+  background-size: 200% auto, 100% auto;
+  -webkit-background-clip: text, text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: shine-sweep 6s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    background-position: 200% center, center;
+  }
+  100% {
+    background-position: -200% center, center;
+  }
 }

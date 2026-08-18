@@ -11,13 +11,13 @@ const Header = () => {
         
         <nav className="header-nav">
           <a href="#inicio">Inicio</a>
-          <a href="#sobre-mi">Sobre mí</a>
-          <a href="#proyectos">Proyectos</a>
-          <a href="#servicios">Servicios</a>
+          <a href="#nosotros">Nosotros</a>
+          <a href="#proyectos">Nuestros proyectos</a>
+          <a href="#servicios">Nuestros servicios</a>
         </nav>
 
         <div className="header-actions">
-          <a href="#contacto" className="btn-contact">Contáctame</a>
+          <a href="#contacto" className="btn-contact">Contáctanos</a>
         </div>
       </div>
     </header>
