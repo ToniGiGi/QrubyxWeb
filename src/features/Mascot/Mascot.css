@@ -322,6 +322,7 @@
   /* 2. VISUAL AREA SECOND */
   .mascot-visual-area {
     order: 2; /* Mascot below text */
+    flex: none; /* Reset desktop flex-basis: 50% so the explicit height below is respected (its children are absolutely positioned, so it has no in-flow content to size itself by) */
     width: 100%;
     height: 350px;
     margin-bottom: 0;
