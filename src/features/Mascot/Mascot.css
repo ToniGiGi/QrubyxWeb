@@ -276,11 +276,11 @@
 @media (max-width: 900px) {
   .mascot-section {
     height: auto;
-    padding: 4rem 0;
+    padding: 6rem 0 0 0; /* No bottom padding so Qry sits flush on the floor */
   }
   
   .mascot-floor {
-    height: 15%;
+    height: 15%; /* Keep floor small */
   }
   
   .mascot-room-bg {
@@ -293,39 +293,16 @@
     height: auto;
   }
   
-  .mascot-visual-area {
-    width: 100%;
-    height: 400px;
-    margin-bottom: 2rem;
-  }
-
-  .mascot-image-3d {
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 250px;
-    bottom: 0%;
-  }
-
-  .floating-window-ide {
-    width: 90%;
-    max-width: 320px;
-    left: 50%;
-    top: 5%;
-    transform: perspective(1000px) rotateY(15deg) translateX(-50%);
-    animation: float-slow-3d-mobile 7s ease-in-out infinite;
-  }
-
-  .window-body {
-    padding: 16px;
-    font-size: 0.85rem;
-  }
-
+  /* 1. TEXT AREA FIRST */
   .mascot-info-area {
-    flex: 1;
+    order: -1; /* Pushes text to the top */
     width: 100%;
     padding: 0;
-    margin-top: 1rem;
-    z-index: 20; /* Ensure text is above any stray shadows */
+    margin-top: 0;
+    margin-bottom: 3rem;
+    z-index: 20;
+    text-align: center;
+    align-items: center;
   }
 
   .mascot-title {
@@ -334,14 +311,45 @@
   
   .mascot-description {
     font-size: 1rem;
+    text-align: center;
   }
   
   .mascot-slogan {
     font-size: 1.5rem;
+    align-items: center;
+  }
+
+  /* 2. VISUAL AREA SECOND */
+  .mascot-visual-area {
+    order: 2; /* Mascot below text */
+    width: 100%;
+    height: 350px;
+    margin-bottom: 0;
+  }
+
+  .mascot-image-3d {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 250px;
+    bottom: 5%; /* Slightly above the very bottom border */
+  }
+
+  .floating-window-ide {
+    width: 95%;
+    max-width: 360px;
+    left: 50%;
+    top: -10%; /* Lift the IDE window up a bit */
+    transform: perspective(1000px) translateX(-50%) rotateY(15deg);
+    animation: float-slow-3d-mobile 7s ease-in-out infinite;
+  }
+
+  .window-body {
+    padding: 16px;
+    font-size: 0.85rem;
   }
 }
 
 @keyframes float-slow-3d-mobile {
-  0%, 100% { transform: perspective(1000px) rotateY(15deg) translate(-50%, 0); }
-  50% { transform: perspective(1000px) rotateY(15deg) translate(-50%, -15px); }
+  0%, 100% { transform: perspective(1000px) translateX(-50%) rotateY(15deg) translateY(0); }
+  50% { transform: perspective(1000px) translateX(-50%) rotateY(15deg) translateY(-15px); }
 }
