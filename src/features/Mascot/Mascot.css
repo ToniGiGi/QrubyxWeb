@@ -1,7 +1,335 @@
-.mascot-skeleton {
-  min-height: 80vh;
+.mascot-section {
+  position: relative;
+  height: 80vh;
+  min-height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-top: -1px; /* Remove any sub-pixel gap */
+  background: linear-gradient(to bottom, var(--bg-dark) 0%, var(--bg-dark) 10%, rgba(168, 85, 247, 0.08) 60%, var(--bg-dark) 100%);
+}
+
+/* Horizontal Fade Overlay (Vignette) */
+.mascot-section::before,
+.mascot-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25%; /* Width of the fade */
+  z-index: 2; /* Above the room bg and floor, below the content (10) */
+  pointer-events: none;
+}
+
+.mascot-section::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-dark) 0%, transparent 100%);
+}
+
+.mascot-section::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-dark) 0%, transparent 100%);
+}
+
+/* 3D Room Environment */
+.mascot-room-bg {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  /* Very subtle glow near the floor */
+  background: radial-gradient(circle at 25% 100%, rgba(168, 85, 247, 0.05) 0%, transparent 60%);
+  z-index: 1;
+}
+
+.mascot-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20%; /* Lowered floor horizon so it doesn't intersect Qry's head */
+  background: linear-gradient(to bottom, rgba(168, 85, 247, 0.1) 0%, var(--bg-dark) 100%);
+  border-top: 1px solid rgba(168, 85, 247, 0.2);
+  box-shadow: 0 -20px 80px rgba(168, 85, 247, 0.15);
+  z-index: 1;
+}
+
+.mascot-content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+/* LEFT SIDE - VISUALS */
+.mascot-visual-area {
+  position: relative;
+  flex: 0 0 50%;
+  height: 100%;
+}
+
+.mascot-image-3d {
+  position: absolute;
+  bottom: 0%; /* Anchored to the very bottom to sit firmly on the lowered floor */
+  left: 5%;
+  width: 100%;
+  max-width: 420px;
+  z-index: 5;
+  /* Color grading to integrate the PNG into the dark purple environment */
+  filter: 
+    brightness(0.85) /* Darken overall exposure */
+    contrast(1.15)   /* Deepen the shadows */
+    saturate(1.1)    /* Keep the neon colors popping */
+    drop-shadow(0 40px 30px rgba(0, 0, 0, 0.95)) /* Heavy grounding shadow */
+    drop-shadow(0 -10px 40px rgba(168, 85, 247, 0.2)); /* Ambient purple bounce light from the room */
+  transition: filter 0.5s ease;
+}
+
+/* Floating Decor Panels removed to backup */
+
+/* New IDE Window */
+.floating-window-ide {
+  position: absolute;
+  top: 40%;
+  left: 8%; /* Moved closer and lower to sit nicely behind Qry */
+  width: 450px;
+  background: rgba(15, 10, 25, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-top: 1px solid rgba(168, 85, 247, 0.6);
+  border-radius: 16px;
+  z-index: 2; /* Behind Mascot which is z-index 5 */
+  box-shadow: -30px 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transform: perspective(1000px) rotateY(25deg);
+  animation: float-slow-3d 7s ease-in-out infinite;
+}
+
+.window-header {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 16px;
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.window-header .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.window-header .dot.red { background: #ff5f56; }
+.window-header .dot.yellow { background: #ffbd2e; }
+.window-header .dot.green { background: #27c93f; }
+
+.window-body {
+  padding: 24px;
+  font-family: 'Fira Code', monospace;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #abb2bf;
+}
+
+.code-keyword { color: #c678dd; } /* Purple */
+.code-variable { color: #e5c07b; } /* Yellow */
+.code-operator { color: #56b6c2; } /* Cyan */
+.code-class { color: #61afef; } /* Blue */
+.code-function { color: #61afef; } /* Blue */
+.code-object { color: #e5c07b; } /* Yellow */
+.code-string { color: #98c379; } /* Green */
+.code-comment { color: #5c6370; font-style: italic; } /* Gray */
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes float-slow-3d {
+  0%, 100% { transform: perspective(1000px) rotateY(25deg) translateY(0); }
+  50% { transform: perspective(1000px) rotateY(25deg) translateY(-15px); }
+}
+
+/* RIGHT SIDE - INFO TEXT */
+.mascot-info-area {
+  flex: 0 0 50%;
+  padding-left: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+}
+
+.mascot-slogan {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.slogan-line-1 {
+  color: var(--text-primary);
+}
+
+.slogan-line-2 {
+  color: #34d399; /* Bright green/cyan */
+  text-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
+}
+
+.mascot-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.mascot-eyebrow .dot {
+  width: 8px;
+  height: 8px;
+  background-color: #a855f7; /* Purple accent */
+  border-radius: 50%;
+  box-shadow: 0 0 10px #a855f7;
+}
+
+.mascot-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.mascot-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.mascot-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.feature-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.feature-icon.green {
+  background-color: #10b981;
+  box-shadow: 0 0 15px #10b981;
+}
+
+.feature-icon.cyan {
+  background-color: #06b6d4;
+  box-shadow: 0 0 15px #06b6d4;
+}
+
+.feature-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-text strong {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.feature-text span {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .mascot-section {
+    height: auto;
+    padding: 4rem 0;
+  }
+  
+  .mascot-floor {
+    height: 20%;
+  }
+  
+  .mascot-room-bg {
+    height: 80%;
+  }
+
+  .mascot-content-wrapper {
+    flex-direction: column;
+    padding: 0 1.5rem;
+    height: auto;
+  }
+  
+  .mascot-visual-area {
+    width: 100%;
+    height: 450px;
+    margin-bottom: 3rem;
+  }
+
+  .mascot-image-3d {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 300px;
+    bottom: 5%;
+  }
+
+  .decor-code {
+    top: 15%;
+    left: auto;
+    right: 10%;
+    padding: 1rem;
+  }
+  
+  .code-tag {
+    font-size: 1.8rem;
+  }
+
+  .decor-files {
+    top: 40%;
+    left: 5%;
+  }
+
+  .mascot-info-area {
+    flex: 1;
+    width: 100%;
+    padding: 0;
+    margin-top: 2rem;
+  }
+
+  .mascot-title {
+    font-size: 2.2rem;
+  }
 }

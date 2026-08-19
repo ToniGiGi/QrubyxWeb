@@ -29,6 +29,16 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   overflow-x: hidden;
+  
+  /* Ocultar scrollbar en Firefox, IE y Edge */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ocultar scrollbar global en Chrome, Safari y Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 a {

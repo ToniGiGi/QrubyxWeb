@@ -5,6 +5,7 @@ import About from './features/About/About'
 import Mascot from './features/Mascot/Mascot'
 import Projects from './features/Projects/Projects'
 import Services from './features/Services/Services'
+import Chatbot from './features/Chatbot/Chatbot'
 import './index.css'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Projects />
         <Services />
       </main>
+      <Chatbot />
     </>
   )
 }
