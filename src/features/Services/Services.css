@@ -1,6 +1,353 @@
-.services-skeleton {
+.srv-section {
+  position: relative;
   min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8rem 0;
+  background: var(--bg-primary);
+}
+
+.srv-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header Grid */
+.srv-header-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.title-l1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  text-align: right; /* Shares the same right edge as title-l2, so both lines read as one aligned block */
+  line-height: 1.2;
+}
+
+.srv-header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  width: 100%;
+  align-items: end;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 2px; /* Gap between Qrubyx and the dot */
+}
+
+.title-l2 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.header-center {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin-bottom: 9px; /* Sit perfectly on the baseline of "en Qrubyx" */
+}
+
+.header-right {
+  /* Empty spacer */
+}
+
+/* The replacement dot: stays hidden for the ENTIRE journey through the cables/cards,
+   only appears the instant the last card (row 2) lights up at 45%, so the loop reads as
+   "the drop travels all the way down, and only then does the next one appear" with no gap/flicker. */
+.srv-dot-static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  background: #34d399;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #34d399;
+  z-index: 99;
+  animation: dot-fade-in 8s infinite linear;
+}
+
+@keyframes dot-fade-in {
+  0%, 30% { opacity: 0; }
+  40%, 100% { opacity: 1; }
+}
+
+/* Wires setup */
+.srv-cards-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 60px; /* Total space reserved for the trunk zone (top half stays empty, see below) */
+  cursor: default;
+}
+
+.srv-cable-trunk {
+  position: absolute;
+  top: 30px; /* Starts halfway down: the dot falls through empty space first, then hits the visible cable */
+  left: 50%;
+  width: 2px;
+  height: 30px; /* Only the bottom half of the trunk is drawn */
+  border-left: 2px dashed rgba(255, 255, 255, 0.15);
+  transform: translateX(-50%);
+}
+
+/* The single master packet that starts at the exact position of the header dot
+   (top: -39px relative to the trunk) and falls all the way down to the branch split. */
+.srv-trunk-packet {
+  left: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: srv-trunk-packet-seq 8s infinite linear;
+}
+
+@keyframes srv-trunk-packet-seq {
+  0%, 5% { top: -46px; opacity: 1; }
+  18% { top: 31px; opacity: 1; }
+  18.1%, 100% { top: 31px; opacity: 0; }
+}
+
+.srv-cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.srv-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.srv-column.left-col {
+  --color-1: #a855f7; /* Purple */
+  --color-2: #3b82f6; /* Blue */
+}
+
+.srv-column.right-col {
+  --color-1: #34d399; /* Emerald */
+  --color-2: #f59e0b; /* Amber */
+}
+
+.srv-cable-wrapper {
+  position: relative;
+  height: 40px;
+  width: 100%;
+}
+
+.srv-cable-left .srv-cable-box {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(50% + 1.5rem);
+  height: 40px;
+  border-top: 2px dashed rgba(255, 255, 255, 0.15);
+  border-left: 2px dashed rgba(255, 255, 255, 0.15);
+  border-top-left-radius: 16px;
+}
+
+.srv-cable-right .srv-cable-box {
+  position: absolute;
+  top: 0;
+  right: 50%;
+  width: calc(50% + 1.5rem);
+  height: 40px;
+  border-top: 2px dashed rgba(255, 255, 255, 0.15);
+  border-right: 2px dashed rgba(255, 255, 255, 0.15);
+  border-top-right-radius: 16px;
+}
+
+/* Straight cable for second row */
+.srv-cable-straight {
+  position: relative;
+  width: 100%;
+  height: 40px;
+}
+
+.srv-cable-straight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 40px;
+  border-left: 2px dashed rgba(255, 255, 255, 0.15);
+  transform: translateX(-50%);
+}
+
+/* Packets */
+.srv-data-packet {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  margin-left: -7px;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 5;
+}
+
+/* 2. Branch packets spawn */
+.srv-branch-packet.left {
+  animation: branch-left-seq 8s infinite linear;
+}
+@keyframes branch-left-seq {
+  0%, 18% { opacity: 0; top: 1px; left: calc(100% + 1.5rem); background: #34d399; box-shadow: 0 0 10px #34d399; }
+  18.1% { opacity: 1; }
+  28% { top: 1px; left: calc(50% + 1px); opacity: 1; }
+  31% { top: 10px; left: calc(50% + 1px); opacity: 1; background: var(--color-1); box-shadow: 0 0 10px var(--color-1); }
+  36% { top: 40px; left: calc(50% + 1px); opacity: 1; }
+  36.1%, 100% { top: 40px; left: calc(50% + 1px); opacity: 0; }
+}
+
+.srv-branch-packet.right {
+  animation: branch-right-seq 8s infinite linear;
+}
+@keyframes branch-right-seq {
+  0%, 18% { opacity: 0; top: 1px; right: calc(100% + 1.5rem); background: #34d399; box-shadow: 0 0 10px #34d399; }
+  18.1% { opacity: 1; }
+  28% { top: 1px; right: calc(50% - 1px); opacity: 1; }
+  31% { top: 10px; right: calc(50% - 1px); opacity: 1; background: var(--color-1); box-shadow: 0 0 10px var(--color-1); }
+  36% { top: 40px; right: calc(50% - 1px); opacity: 1; }
+  36.1%, 100% { top: 40px; right: calc(50% - 1px); opacity: 0; }
+}
+
+/* 3. Row 1 Cards Illuminate */
+.card-1, .card-2 {
+  animation: pulse-1-seq 8s infinite ease-out;
+}
+@keyframes pulse-1-seq {
+  0%, 35.9% { box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(255, 255, 255, 0.12); transform: translateY(0); }
+  36% { box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 50px var(--color-1); border-color: var(--color-1); transform: translateY(-5px); }
+  51% { box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(255, 255, 255, 0.12); transform: translateY(0); }
+  100% { box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(255, 255, 255, 0.12); transform: translateY(0); }
+}
+
+/* 4. Straight packets drop to Row 2 */
+.srv-straight-packet {
+  left: 50%;
+  animation: srv-travel-straight-seq 8s infinite linear;
+}
+@keyframes srv-travel-straight-seq {
+  0%, 45.9% { top: 0; opacity: 0; background: var(--color-1); box-shadow: 0 0 10px var(--color-1); }
+  46% { top: 0; opacity: 1; }
+  51% { top: 20px; opacity: 1; background: var(--color-2); box-shadow: 0 0 10px var(--color-2); }
+  56% { top: 40px; opacity: 1; }
+  56.1%, 100% { top: 40px; opacity: 0; background: var(--color-2); box-shadow: 0 0 10px var(--color-2); }
+}
+
+/* 5. Row 2 Cards Illuminate */
+.card-3, .card-4 {
+  animation: pulse-2-seq 8s infinite ease-out;
+}
+@keyframes pulse-2-seq {
+  0%, 55.9% { box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(255, 255, 255, 0.12); transform: translateY(0); }
+  56% { box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 50px var(--color-2); border-color: var(--color-2); transform: translateY(-5px); }
+  71% { box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(255, 255, 255, 0.12); transform: translateY(0); }
+  100% { box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: rgba(255, 255, 255, 0.12); transform: translateY(0); }
+}
+
+/* Ambient Background Lights */
+.srv-ambient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.srv-ambient-purple {
+  width: 500px;
+  height: 500px;
+  background: #a855f7;
+  top: -150px;
+  left: -150px;
+}
+
+.srv-ambient-emerald {
+  width: 600px;
+  height: 600px;
+  background: #34d399;
+  bottom: -200px;
+  right: -200px;
+}
+
+.srv-ambient-blue {
+  width: 400px;
+  height: 400px;
+  background: #3b82f6;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.15;
+}
+
+/* Base Card Style */
+.srv-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 3.5rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 10;
+}
+
+.srv-card h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+.srv-card p {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.8;
+}
+
+@media (max-width: 900px) {
+  .srv-cards-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .srv-card {
+    padding: 2.5rem;
+  }
+  .srv-cable-trunk, .srv-cable-wrapper, .srv-cable-straight {
+    display: none;
+  }
+
+  /* The right-aligned-to-the-dot layout only makes sense next to the cable system,
+     which is hidden above. Fall back to a normal centered heading without the dot. */
+  .srv-header-grid {
+    grid-template-columns: 1fr;
+  }
+  .header-left {
+    align-items: center;
+  }
+  .title-l1,
+  .title-l2 {
+    text-align: center;
+    font-size: 2.5rem;
+  }
+  .header-center,
+  .header-right {
+    display: none;
+  }
 }
