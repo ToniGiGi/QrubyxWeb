@@ -369,8 +369,52 @@
   .modal-title {
     font-size: 2rem;
   }
-  
+
   .impact-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Mobile Safari can render this whole section blank when a webkit-mask-image
+     sits on top of a continuously-animating (transform) descendant. Drop the mask
+     and fake the same left/right vignette with plain gradient overlays instead,
+     which every mobile browser paints reliably. */
+  .carousel-wrapper {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .carousel-wrapper::before,
+  .carousel-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 12%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .carousel-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-dark) 0%, transparent 100%);
+  }
+
+  .carousel-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-dark) 0%, transparent 100%);
+  }
+
+  /* Also ease off the GPU load: a dozen simultaneously-animating, blurred cards
+     is a common cause of mobile Safari giving up and painting nothing at all. */
+  .project-card {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(15, 10, 25, 0.85);
+  }
+
+  .marquee-group {
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
