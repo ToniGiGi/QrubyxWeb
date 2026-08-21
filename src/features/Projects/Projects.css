@@ -412,9 +412,14 @@
     background: rgba(15, 10, 25, 0.85);
   }
 
+  /* On narrow screens, min-width:100% + justify-content:space-around can spread
+     the leftover space out BETWEEN the cards instead of just at the edges, making
+     them look far apart (and, mid-scroll, leaving long empty stretches where the
+     small viewport lands entirely inside a gap). Force tight, gap-only spacing
+     so cards sit together the same way they do on desktop. */
   .marquee-group {
+    min-width: 0;
+    justify-content: flex-start;
     will-change: transform;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
   }
 }
